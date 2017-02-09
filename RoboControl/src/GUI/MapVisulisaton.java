@@ -7,6 +7,7 @@ import DataHandling.DistanceDataProcessing;
 import DataHandling.GettersSetters;
 import RobotConnections.Robot;
 import RobotConnections.SerialConn;
+import PathPlanning.PathFinder;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -32,6 +33,7 @@ public class MapVisulisaton  {
 	private JFrame mapFrame;
 
 	DistanceDataProcessing distanceDataProcessing;
+	PathFinder PathIt;
 	//SerialConn serialClass;
 
 	/**
@@ -187,22 +189,23 @@ public class MapVisulisaton  {
 			AffineTransform at = new AffineTransform();
 			
 			updateMapData(actRobot); // Collect new map data.
-			
+			/*for(int i = 0; i < mapXY.length; i++){
+				for(int j = 0; j < mapXY[0].length; j++)
+						System.out.print(mapXY[i][j] + " ");
+				System.out.println();
+			}*/
 			// Main paint operation, this is the mostly costly operation within the entire program BIG O(n^2)
 			for ( int x = 0; x < mapXY.length ; x++ ) {
 
 				for ( int y = 0 ; y < mapXY.length; y++ ) {
-					
-					if ( mapXY[x][y] == 0 ) { // never observed
-						g.setColor(Color.BLUE);// graphics context colour
-						g.fillRect( x * sqSize, y * sqSize , sqSize, sqSize );
-					}
+					//if ( mapXY[x][y] == 0 ) { // never observed
+					//	g.setColor(Color.BLUE);// graphics context colour
+					//	g.fillRect( x * sqSize, y * sqSize , sqSize, sqSize );
+					//}
 
 					if ( mapXY[x][y] > 0 && obsXY[x][y] > 0 ) { // probably occupied
 						g.setColor(Color.RED);// graphics context colour
 						g.fillRect( x * sqSize, y * sqSize , sqSize*2, sqSize*2 );
-						System.out.print(mapXY[x][y]);
-						System.out.print(" ");
 					}
 				
 				//if ( mapXY[x][y] == 0 && obsXY[x][y] == 0 ) { // probably unoccupied
@@ -210,9 +213,10 @@ public class MapVisulisaton  {
 				//		g.fillRect( x * sqSize, y * sqSize , sqSize, sqSize );
 				//	}
 				}
+				System.out.println();
 			}
-
 			g.setColor(Color.BLUE);
+			PathPlanning.PathFinder.PathIt(mapXY);
 
 			Shape temp;
 			at.rotate( radians, actRobot.getCenterX(), actRobot.getCenterY() );
