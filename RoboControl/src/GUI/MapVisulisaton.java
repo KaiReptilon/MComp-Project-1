@@ -213,7 +213,6 @@ public class MapVisulisaton  {
 				//		g.fillRect( x * sqSize, y * sqSize , sqSize, sqSize );
 				//	}
 				}
-				System.out.println();
 			}
 			g.setColor(Color.BLUE);
 			PathPlanning.PathFinder.PathIt(mapXY);
