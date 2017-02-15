@@ -181,7 +181,6 @@ public class MapVisulisaton  {
 				st = true;
 				robotShape = new Rectangle2D.Double( robot.getX(), robot.getY() , robot.getWidth(), robot.getHeight() );
 			}
-
 			int compass = distanceDataProcessing.compassReading;
 			double radians = compass*( Math.PI/180 );// Converts compass bearing to radians
 			Graphics2D g2d = ( Graphics2D ) g;
@@ -215,7 +214,6 @@ public class MapVisulisaton  {
 				}
 			}
 			g.setColor(Color.BLUE);
-			PathPlanning.PathFinder.PathIt(mapXY);
 
 			Shape temp;
 			at.rotate( radians, actRobot.getCenterX(), actRobot.getCenterY() );
@@ -307,7 +305,14 @@ public class MapVisulisaton  {
 			int xClick, yClick;
 			xClick = e.getX();
 			yClick = e.getY();
-			
+			double width = getSize().width;
+			double height = getSize().height;
+			double htOfX = height / rowX;
+			double wdOfX = width / colY;
+			int robotStartElavationInRows = roboStartpos;
+			int startX = (int) ( ( ( colY*wdOfX )/2) - ( wdOfX * 2 ) );
+			int startY = (int) ( ( rowX*htOfX ) - ( htOfX * robotStartElavationInRows ) );
+			PathPlanning.PathFinder.PathIt(mapXY, startX, startY, xClick, yClick);
 			// calculate angle from robot centre to point clicked
 			float theta = (float) (Math.atan2( (yClick-robot.getY()), (xClick-robot.getX())));
 			theta += Math.PI/2.0;
