@@ -7,7 +7,8 @@ import DataHandling.DistanceDataProcessing;
 import DataHandling.GettersSetters;
 import RobotConnections.Robot;
 import RobotConnections.SerialConn;
-import PathPlanning.PathFinder;
+import PathPlanning.FindPath;
+import PathPlanning.FindPath.Node;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -33,7 +34,7 @@ public class MapVisulisaton  {
 	private JFrame mapFrame;
 
 	DistanceDataProcessing distanceDataProcessing;
-	PathFinder PathIt;
+	FindPath PathIt;
 	//SerialConn serialClass;
 
 	/**
@@ -237,11 +238,21 @@ public class MapVisulisaton  {
 			}
 			 */
 			
+			/*for(Node n : finalPath){
+				if(mapXY[n.x][n.y] == 1){
+					PathPlanning.FindPath.updatedGoal();
+					PathPlanning.FindPath.PathIt(mapXY, n.x, n.y);
+				}
+			}*/
+			
 			// can be used to measure time to complete map repaint
-			final long endTime = System.currentTimeMillis();
+			//final long endTime = System.currentTimeMillis();
 			//System.out.println("Total execution time: " + ( endTime - startTime ) );
-
-			//repaint();
+			int robotStartElavationInRows = roboStartpos;
+			int startX = (int) ( ( ( colY*wdOfX )/2) - ( wdOfX * 2 ) );
+			int startY = (int) ( ( rowX*htOfX ) - ( htOfX * robotStartElavationInRows ) );
+			PathPlanning.FindPath.PathIt(mapXY, startX, startY);
+			repaint();
 		}
 
 		/**
@@ -305,14 +316,7 @@ public class MapVisulisaton  {
 			int xClick, yClick;
 			xClick = e.getX();
 			yClick = e.getY();
-			double width = getSize().width;
-			double height = getSize().height;
-			double htOfX = height / rowX;
-			double wdOfX = width / colY;
-			int robotStartElavationInRows = roboStartpos;
-			int startX = (int) ( ( ( colY*wdOfX )/2) - ( wdOfX * 2 ) );
-			int startY = (int) ( ( rowX*htOfX ) - ( htOfX * robotStartElavationInRows ) );
-			PathPlanning.PathFinder.PathIt(mapXY, startX, startY, xClick, yClick);
+			PathPlanning.FindPath.goals(xClick, yClick);
 			// calculate angle from robot centre to point clicked
 			float theta = (float) (Math.atan2( (yClick-robot.getY()), (xClick-robot.getX())));
 			theta += Math.PI/2.0;
